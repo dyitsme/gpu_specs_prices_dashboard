@@ -22,6 +22,7 @@ figbrandavgprice.update_traces(marker_color='#f5054f')
 
 scatterbrandprice = px.scatter(df, x='brand', y='price', color='memory size')
 
+scatterbrandpricetype = px.scatter(df, x='brand', y='price', color='model')
 
 
 with col1:
@@ -30,3 +31,4 @@ with col1:
 
 with col2:
   st.plotly_chart(figbrandavgprice, theme='streamlit')
+  st.plotly_chart(scatterbrandpricetype, theme='streamlit')
