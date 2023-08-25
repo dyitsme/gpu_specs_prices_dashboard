@@ -12,7 +12,12 @@ df = pd.read_csv('gpu_specs_prices.csv')
 
 brandcount = df.groupby('brand').size()
 brandcount = brandcount.sort_values(ascending=False)
-figbrandcount = px.bar(brandcount)
+brandcount = brandcount.reset_index()
+
+brandcount = brandcount.rename(columns={0: 'count'})
+
+figbrandcount = px.pie(brandcount, values='count', names='brand', title='Number of GPUs per brand')
+
 
 brandavgprice = df.groupby('brand')['price'].mean(numeric_only=True)
 brandavgprice = brandavgprice.sort_values(ascending=True)
