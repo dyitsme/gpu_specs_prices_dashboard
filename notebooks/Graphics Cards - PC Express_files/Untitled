@@ -1,0 +1,14 @@
+/*
+    Are you sure who you are ?
+    Are you really with us ?
+    
+*/
+
+var BOXX_CLIENT_ID = 'BOXX_CLIENT_ID' in window ? BOXX_CLIENT_ID : undefined;
+
+// ur BOXX_CLIENT_ID = undefined;
+
+/*
+    You deserve to be defined
+    Lets get in touch
+*/

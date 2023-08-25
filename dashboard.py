@@ -8,7 +8,7 @@ st.title('💻PC Express Graphics Cards Dashboard')
 
 col1, col2 = st.columns(2)
 
-df = pd.read_csv('pcexpress.csv')
+df = pd.read_csv('gpu_specs_prices.csv')
 
 brandcount = df.groupby('brand').size()
 brandcount = brandcount.sort_values(ascending=False)
@@ -20,7 +20,7 @@ brandavgprice = brandavgprice.sort_values(ascending=True)
 figbrandavgprice = px.bar(brandavgprice, x='price')
 figbrandavgprice.update_traces(marker_color='#f5054f')
 
-scatterbrandprice = px.scatter(df, x='brand', y='price', color='vram')
+scatterbrandprice = px.scatter(df, x='brand', y='price', color='memory size')
 
 
 
