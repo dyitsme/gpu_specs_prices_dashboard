@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-from matplotlib import pyplot as plt 
 
 st.set_page_config(layout='wide')
 st.title('💻PC Express Graphics Cards Dashboard')
