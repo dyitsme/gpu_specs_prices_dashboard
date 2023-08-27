@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 
-st.set_page_config(layout='wide')
-st.title('💻PC Express Graphics Cards Dashboard')
+st.set_page_config(page_title='GPU prices dashboard', layout='wide')
+st.title('GPU Prices Dashboard')
 
 col1, col2, col3, col4 = st.columns(4)
 cola, colb = st.columns(2)
@@ -16,7 +16,7 @@ brandcount_df = brandcount_df.reset_index()
 
 brandcount_df = brandcount_df.rename(columns={0: 'count'})
 
-figbrandcount = px.pie(brandcount_df, values='count', names='brand', title='Number of GPU product listings per brand')
+figbrandcount = px.pie(brandcount_df, values='count', names='brand', title='Number of GPU product listings per brand', color_discrete_sequence=px.colors.sequential.Blues_r)
 
 with st.container():
   col1.metric(label='Number of products', value=len(gpu_df))
@@ -28,51 +28,35 @@ with st.container():
 
 brandavgprice_df = gpu_df.groupby('brand')['price'].mean(numeric_only=True)
 brandavgprice_df = brandavgprice_df.sort_values(ascending=True)
-topNExpensiveModels_df = gpu_df.groupby(['model', 'memory size', 'memory type'])['price'].mean()
-topNCheapestModels_df = topNExpensiveModels_df
 
-topNExpensiveModels_df = topNExpensiveModels_df.reset_index()
-topNCheapestModels_df = topNCheapestModels_df.reset_index()
-pivotexpensive = pd.pivot_table(data=topNExpensiveModels_df, index=['model'], columns=['memory type', 'memory size'], values='price')
-pivotcheapest = pd.pivot_table(data=topNCheapestModels_df, index=['model'], columns=['memory type', 'memory size'], values='price')
+modelavgprice_df = gpu_df.groupby('model')['price'].mean(numeric_only=True)
+modelavgprice_df = modelavgprice_df.sort_values(ascending=True)
 
 figbrandavgprice = px.bar(brandavgprice_df, x='price', title='Average prices per brand')
-# figbrandavgprice.update_traces(marker_color='#f5054f')
+
+figmodelavgprice = px.bar(modelavgprice_df, title='Average prices per model')
 
 figpricedist = px.histogram(gpu_df, x='price', nbins=30, title='Price distribution of all items')
 figpricedist.update_traces(marker_line_width=1,marker_line_color="white")
-figtopNExpensive = px.bar(gpu_df.nlargest(10, 'price').sort_values(ascending=True, by='price'), x='price', y='name', title='Top 10 most expensive items')
-figtopNCheapest = px.bar(gpu_df.nsmallest(10, 'price').sort_values(ascending=False, by='price'), x='price', y='name', title='Top 10 most affordable items')
-# figtopNExpensiveModels = px.bar(pivotexpensive)
-# figtopNCheapestModels = px.bar(pivotcheapest)
+
 
 
 figscatterbrandpricemodel = px.scatter(gpu_df, x='brand', y='price', color='model', hover_data=['name', 'memory size', 'memory type'], title='All items', height=750)
 figscatterbrandpricemodel.update_traces(marker_size=20)
 with cola:
   st.plotly_chart(figbrandcount, theme='streamlit')
-  st.plotly_chart(figpricedist, theme='streamlit')
+  NExpensive = st.slider('Number of items', 1, int(len(gpu_df)/2), 10, key='expensive')
+  figtopNExpensive = px.bar(gpu_df.nlargest(int(NExpensive), 'price').sort_values(ascending=True, by='price'), x='price', y='name', title=f'Top {NExpensive} most expensive items')
+  figtopNExpensive.update_layout(minreducedheight=500, height=700)
   st.plotly_chart(figtopNExpensive, theme='streamlit')
-  pivotcheapest
-  
+  st.plotly_chart(figpricedist, theme='streamlit')
 with colb:
   st.plotly_chart(figbrandavgprice, theme='streamlit')
+  NCheapest = st.slider('Number of items', 1, int(len(gpu_df)/2), 10, key='cheapest')
+  figtopNCheapest = px.bar(gpu_df.nsmallest(int(NCheapest), 'price').sort_values(ascending=False, by='price'), x='price', y='name', title=f'Top {NCheapest} most affordable items')
+  figtopNCheapest.update_layout(minreducedheight=500, height=700)
   st.plotly_chart(figtopNCheapest, theme='streamlit')
-  gpu_df
-  pivotexpensive
-  # st.plotly_chart(figtopNCheapestModels)
+  st.plotly_chart(figmodelavgprice, theme='streamlit')
 
 st.plotly_chart(figscatterbrandpricemodel, theme='streamlit', use_container_width=True)
-
-# scatterbrandprice = px.scatter(df, x='brand', y='price', color='memory size')
-
-# scatterbrandpricetype = px.scatter(df, x='brand', y='price', color='model')
-
-
-# with col1:
-#   st.plotly_chart(figbrandcount, theme='streamlit')
-#   st.plotly_chart(scatterbrandprice, theme='streamlit')
-
-# with col2:
-#   st.plotly_chart(figbrandavgprice, theme='streamlit')
-#   st.plotly_chart(scatterbrandpricetype, theme='streamlit')
+st.write('You can check this project on [Github](https://github.com/dyitsme/gpu_specs_prices_dashboard).')
