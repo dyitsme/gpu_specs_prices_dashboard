@@ -49,8 +49,6 @@ figpricedist = px.histogram(gpu_df, x='price', nbins=30, title='Price distributi
 figpricedist.update_traces(marker_line_width=1, marker_line_color="white")
 
 
-
-
 with cola:
   st.plotly_chart(figbrandcount, theme='streamlit')
   NExpensive = st.slider('Select number of items', 1, int(len(gpu_df)/2), 10, key='expensive')
