@@ -2,7 +2,7 @@
 
 ## About the project
 
-<img src="../gpu_prices/assets/screenshot.png">
+<img src="/assets/screenshot.png">
 
 With so many graphics cards to choose from, it can be difficult for customers to find one that fits with their budget. This app collected graphics cards product information from the PC Express website. It then displays a dashboard that shows a general overview of the number of graphics cards listed and their respective prices. 
 
