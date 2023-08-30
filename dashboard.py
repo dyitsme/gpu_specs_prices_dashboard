@@ -73,3 +73,4 @@ figscatterbrandpricemodel.update_traces(marker_size=20)
 
 st.plotly_chart(figscatterbrandpricemodel, theme='streamlit', use_container_width=True)
 st.write('You can check this project on [Github](https://github.com/dyitsme/gpu_specs_prices_dashboard).')
+st.markdown('© 2023 Denzel Yongco')
